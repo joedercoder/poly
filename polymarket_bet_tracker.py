@@ -1,5 +1,4 @@
 import requests
-from datetime import datetime
 from typing import List
 
 GAMMA_ENDPOINT = "https://gamma-api.polymarket.com/markets"
@@ -15,8 +14,7 @@ def fetch_markets(start_date_min: str) -> List[dict]:
     }
     resp = requests.get(GAMMA_ENDPOINT, params=params)
     resp.raise_for_status()
-    data = resp.json()
-    return data.get("markets", data)
+    return resp.json().get("markets", resp.json())
 
 
 def fetch_tokens(condition_id: str) -> List[str]:
@@ -52,9 +50,15 @@ def main():
 
     all_tokens = []
     for m in markets:
-        cid = m.get("condition_id") or m.get("id")
-        tokens = fetch_tokens(str(cid))
-        all_tokens.extend(tokens)
+        if "condition_id" in m:
+            tokens = fetch_tokens(str(m["condition_id"]))
+            all_tokens.extend(tokens)
+        else:
+            print(f"Fehlender condition_id für Markt {m.get('id')}")
+
+    if not all_tokens:
+        print("Keine Token gefunden.")
+        return
 
     prices = fetch_prices(all_tokens)
     print("Preise:")
