@@ -1,4 +1,5 @@
 import requests
+from requests.exceptions import RequestException
 from datetime import datetime
 from typing import List
 
@@ -13,15 +14,23 @@ def fetch_markets(start_date_min: str) -> List[dict]:
         "archived": "false",
         "start_date_min": start_date_min,
     }
-    resp = requests.get(GAMMA_ENDPOINT, params=params)
-    resp.raise_for_status()
+    try:
+        resp = requests.get(GAMMA_ENDPOINT, params=params)
+        resp.raise_for_status()
+    except RequestException as exc:
+        print(f"Failed to fetch markets: {exc}")
+        return []
     return resp.json()
 
 
 def fetch_tokens(condition_id: str) -> List[str]:
     url = f"{CLOB_ENDPOINT}/markets/{condition_id}"
-    resp = requests.get(url)
-    resp.raise_for_status()
+    try:
+        resp = requests.get(url)
+        resp.raise_for_status()
+    except RequestException:
+        print(f"Market {condition_id} not found")
+        return []
     market = resp.json().get("market", {})
     tokens = market.get("tokens", [])
     return [t.get("token_id") for t in tokens]
@@ -29,8 +38,12 @@ def fetch_tokens(condition_id: str) -> List[str]:
 
 def fetch_prices(token_ids: List[str]) -> dict:
     params = {"params": [{"token_id": tid, "side": "BUY"} for tid in token_ids]}
-    resp = requests.post(f"{CLOB_ENDPOINT}/prices", json=params)
-    resp.raise_for_status()
+    try:
+        resp = requests.post(f"{CLOB_ENDPOINT}/prices", json=params)
+        resp.raise_for_status()
+    except RequestException as exc:
+        print(f"Failed to fetch prices: {exc}")
+        return {}
     return resp.json()
 
 
