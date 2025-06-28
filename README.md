@@ -18,6 +18,8 @@ Fortfahren und Preise abrufen? [j/N] j
 Tokens für condition_id 42: ['0xabc...', '0xdef...']
 ```
 
+Fehlschläge bei Netzwerkzugriffen werden nun abgefangen und als klare Meldungen ausgegeben.
+
 ### Nutzung
 
 1. Abhaengigkeit installieren:
