@@ -2,9 +2,10 @@
 
 This repository provides a simple script to query Polymarket data.
 
-## fetch_markets.py
+## polymarket_bet_tracker.py
 
-`fetch_markets.py` ruft ueber die Gamma API aktive Maerkte ab, deren Startdatum nach dem 26. Juni 2025 liegt. Die gefundenen Maerkte werden ausgegeben und das Programm fragt, ob Preise ueber den CLOB Endpunkt abgefragt werden sollen. Bei Bestaetigung werden die Token der Maerkte abgefragt und die aktuellen Preise ausgegeben.
+`polymarket_bet_tracker.py` ruft ueber die Gamma API aktive Maerkte ab, deren Startdatum nach dem 26. Juni 2025 liegt. Die gefundenen Maerkte werden ausgegeben und das Programm fragt, ob Preise ueber den CLOB Endpunkt abgefragt werden sollen. Bei Bestaetigung werden die Token der Maerkte abgefragt und die aktuellen Preise ausgegeben.
+Das Skript verträgt Maerkte ohne `start_date` Feld.
 
 ### Nutzung
 
@@ -14,5 +15,5 @@ This repository provides a simple script to query Polymarket data.
    ```
 2. Script starten:
    ```bash
-   python fetch_markets.py
+   python polymarket_bet_tracker.py
    ```

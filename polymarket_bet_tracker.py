@@ -43,7 +43,8 @@ def main():
 
     print("Gefundene Märkte:")
     for m in markets:
-        print(f"- {m['id']}: {m['slug']} (Start: {m['start_date']})")
+        start = m.get("start_date") or m.get("start_date_iso") or "unbekannt"
+        print(f"- {m['id']}: {m['slug']} (Start: {start})")
 
     cont = input("Fortfahren und Preise abrufen? [j/N] ").strip().lower()
     if cont != "j":
